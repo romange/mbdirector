@@ -76,7 +76,7 @@
                     "default": false
                 }
             },
-            "required": [ "name", "binary", "args" ],
+            "required": [ "name" ],
             "additionalItems": false
         },
         "memtier_benchmark_config": {

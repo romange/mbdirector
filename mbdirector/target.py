@@ -46,8 +46,11 @@ class RedisProcessTarget(object):
     """
 
     def __init__(self, config, **kwargs):
-        self.binary = kwargs['binary']
-        self.args = [self.binary] + list(kwargs['args'])
+        self.binary = kwargs.get('binary', None)
+        if self.binary:
+            self.args = [self.binary] + list(kwargs['args'])
+        else:
+            self.args = []
         self.config = config
         self.skip_ping = kwargs.get('skip_ping_on_setup', False)
         self.auto_port_bind_args = kwargs.get('auto_port_bind_args', True)
@@ -64,9 +67,10 @@ class RedisProcessTarget(object):
 
     def setup(self):
         logging.debug('  Command: %s', ' '.join(self.args))
-        self.process = subprocess.Popen(
-            stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            executable=self.binary, args=self.args)
+        if self.binary:
+            self.process = subprocess.Popen(
+                stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                executable=self.binary, args=self.args)
         if self.skip_ping:
             time.sleep(1)
         else:

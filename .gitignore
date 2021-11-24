@@ -1,3 +1,6 @@
 .env/
 **/*.pyc
 *.egg-info/
+build/
+dist/
+results/
